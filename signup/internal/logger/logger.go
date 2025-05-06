@@ -8,6 +8,7 @@ import (
 
 type Logger interface {
 	LogConnectionInfo(r *http.Request)
+	LogError(err error)
 }
 
 type ZeroLogger struct {
@@ -22,4 +23,9 @@ func (*ZeroLogger) LogConnectionInfo(r *http.Request) {
 		Str("method", r.Method).
 		Str("path", r.URL.Path).
 		Msg("received request: ")
+}
+
+func (*ZeroLogger) LogError(err error) {
+	log.Error().
+		Msg(err.Error())
 }
